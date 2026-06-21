@@ -1,0 +1,1 @@
+{"expo":{"name":"Campus Survival Map","slug":"campus-survival-map","version":"0.1.0","orientation":"portrait","userInterfaceStyle":"light","platforms":["android","ios"],"android":{"package":"com.survivinguni.campussurvivalmap","adaptiveIcon":{"backgroundColor":"#2563EB"}},"ios":{"supportsTablet":true},"extra":{"apiMode":"mock"}}}
