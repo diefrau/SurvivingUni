@@ -1,12 +1,12 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../theme/colors';
-import { SurvivalPlace } from '../types/domain';
+import { Spot } from '../types/domain';
 
-const categoryLabel: Record<SurvivalPlace['category'], string> = {
+const categoryLabel: Record<Spot['category'], string> = {
   food: '식사', study: '공부', rest: '휴식', print: '출력', convenience: '편의', admin: '행정',
 };
 
-export function PlaceCard({ place, onPress }: { place: SurvivalPlace; onPress: () => void }) {
+export function PlaceCard({ place, onPress }: { key?: string; place: Spot; onPress: () => void }) {
   return (
     <Pressable onPress={onPress} style={styles.card}>
       <View style={styles.row}>

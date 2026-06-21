@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { campusService } from '../services/campusService';
 import { colors } from '../theme/colors';
-import { Building, SurvivalPlace } from '../types/domain';
+import { Building, Spot } from '../types/domain';
 
 export function HomeScreen({ navigation }: { navigation: any }) {
   const [buildings, setBuildings] = useState<Building[]>([]);
-  const [places, setPlaces] = useState<SurvivalPlace[]>([]);
-  useEffect(() => { campusService.getBuildings().then(setBuildings); campusService.getPlaces().then(setPlaces); }, []);
+  const [places, setPlaces] = useState<Spot[]>([]);
+  useEffect(() => { campusService.listBuildings().then(setBuildings); campusService.listSpots().then(setPlaces); }, []);
   return <ScrollView style={styles.container} contentContainerStyle={styles.content}>
     <Text style={styles.eyebrow}>Surviving Uni</Text><Text style={styles.h1}>캠퍼스 생존 지도를 시작해요</Text>
     <View style={styles.hero}><Text style={styles.heroTitle}>오늘의 생존 팁</Text><Text style={styles.heroText}>시험기간에는 도서관 3층보다 B1 프린트존이 덜 붐벼요.</Text></View>

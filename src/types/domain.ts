@@ -1,6 +1,13 @@
-export type PlaceCategory = 'food' | 'study' | 'rest' | 'print' | 'convenience' | 'admin';
-
+export type SpotCategory = 'food' | 'study' | 'rest' | 'print' | 'convenience' | 'admin';
+export type PlaceCategory = SpotCategory;
 export type CongestionLevel = 'low' | 'medium' | 'high' | 'unknown';
+export type ReportStatus = 'draft' | 'received' | 'reviewing' | 'resolved' | 'rejected';
+
+export interface Tag {
+  id: string;
+  label: string;
+  category?: SpotCategory;
+}
 
 export interface Building {
   id: string;
@@ -11,22 +18,42 @@ export interface Building {
   coordinate: { latitude: number; longitude: number };
 }
 
-export interface SurvivalPlace {
+export interface Spot {
   id: string;
-  buildingId: string;
+  buildingId: Building['id'];
   name: string;
-  category: PlaceCategory;
+  category: SpotCategory;
   floor: string;
   description: string;
+  tagIds: Tag['id'][];
   tags: string[];
   hours: string;
   congestion: CongestionLevel;
-  isSaved?: boolean;
+}
+
+export type SurvivalPlace = Spot;
+
+export interface Favorite {
+  id: string;
+  spotId: Spot['id'];
+  createdAt: string;
+}
+
+export interface Report {
+  id: string;
+  spotId?: Spot['id'];
+  buildingId: Building['id'];
+  category: SpotCategory;
+  title: string;
+  description: string;
+  status: ReportStatus;
+  createdAt: string;
 }
 
 export interface ReportDraft {
-  placeName: string;
-  buildingId: string;
-  category: PlaceCategory;
+  spotId?: Spot['id'];
+  buildingId: Building['id'];
+  category: SpotCategory;
+  title: string;
   description: string;
 }

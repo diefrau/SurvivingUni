@@ -24,7 +24,7 @@ function MainTabs() {
 export function AppNavigator() {
   return <Stack.Navigator screenOptions={{ headerTintColor: colors.text }}>
     <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
-    <Stack.Screen name="BuildingPlaces" component={BuildingPlacesScreen} options={({ route }) => ({ title: route.params.buildingName })} />
+    <Stack.Screen name="BuildingPlaces" component={BuildingPlacesScreen} options={({ route }: { route: { params: { buildingName: string } } }) => ({ title: route.params.buildingName })} />
     <Stack.Screen name="PlaceDetail" component={PlaceDetailScreen} options={{ title: '장소 상세' }} />
   </Stack.Navigator>;
 }
