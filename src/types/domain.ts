@@ -1,6 +1,7 @@
 export type SpotCategory = 'food' | 'study' | 'rest' | 'print' | 'convenience' | 'admin';
 export type PlaceCategory = SpotCategory;
 export type CongestionLevel = 'low' | 'medium' | 'high' | 'unknown';
+export type SpotStatus = 'verified' | 'needs_check' | 'closed' | 'unknown';
 export type ReportStatus = 'draft' | 'received' | 'reviewing' | 'resolved' | 'rejected';
 
 export interface Tag {
@@ -24,11 +25,17 @@ export interface Spot {
   name: string;
   category: SpotCategory;
   floor: string;
+  locationDescription: string;
+  summary: string;
   description: string;
+  tips: string[];
   tagIds: Tag['id'][];
   tags: string[];
   hours: string;
   congestion: CongestionLevel;
+  status: SpotStatus;
+  lastVerifiedAt: string;
+  verificationCount: number;
 }
 
 export type SurvivalPlace = Spot;

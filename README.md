@@ -1,6 +1,6 @@
 # Campus Survival Map MVP
 
-React Native + Expo + TypeScript 기반의 캠퍼스 생존 지도 MVP입니다. 이번 단계는 실제 지도 API, 서버 DB, 로그인 없이 mock data/service 구조로 Android/Galaxy 실행 가능성을 먼저 검증하는 것을 목표로 합니다.
+React Native + Expo + TypeScript 기반의 캠퍼스 생존 지도 MVP입니다. 이번 단계는 실제 지도 API, 서버 DB, 실제 로그인 없이 mock data/service 구조로 Android/Galaxy 실행 가능성과 핵심 UX 흐름을 먼저 검증하는 것을 목표로 합니다.
 
 ## 주요 구조
 
@@ -9,6 +9,8 @@ React Native + Expo + TypeScript 기반의 캠퍼스 생존 지도 MVP입니다.
 - `src/types/domain.ts`: Data Model 문서의 `Building`, `Spot`, `Tag`, `Favorite`, `Report` 축에 맞춘 MVP 도메인 타입
 - `src/data/mockData.ts`: 실제 서버 DB를 대체하는 mock 건물, 장소, 태그, 즐겨찾기, 제보 데이터
 - `src/services/campusService.ts`: 추후 실제 API repository로 교체하기 위한 명확한 반환 타입의 service layer
+- `src/hooks/useFavorites.ts`: `Favorite` 모델을 Spot 내부 필드와 분리해 AsyncStorage에 저장/해제하는 로컬 hook
+- `src/components/SpotCard.tsx`, `EmptyState.tsx`, `ErrorState.tsx`, `LoginPromptModal.tsx`: 장소 탐색/저장/제보 흐름에 필요한 공통 UI
 
 ## Android / Galaxy 우선 실행 방법
 
@@ -44,7 +46,7 @@ npm run typecheck
 
 현재 작업 환경에서는 `npm_config_http_proxy=http://proxy:8080`, `npm_config_https_proxy=http://proxy:8080` 환경 변수가 주입되어 있고, 해당 프록시가 `https://registry.npmjs.org/*` 요청을 `403 Forbidden`으로 차단합니다. 이 문제는 프로젝트의 `package.json`, `package-lock.json`, `.npmrc` 설정 문제가 아니라 실행 환경의 네트워크/프록시 정책 문제로 확인했습니다.
 
-네트워크가 허용된 로컬/CI 환경에서는 위 실행 방법대로 `npm install` 후 Android 실행을 진행하면 됩니다.
+네트워크가 허용된 로컬/CI 환경에서는 위 실행 방법대로 `npm install` 후 Android 실행을 진행하면 됩니다. 이번 UX 단계에서 로컬 즐겨찾기 저장을 위해 `@react-native-async-storage/async-storage` 의존성을 사용합니다.
 
 ## Lint / format 제안
 

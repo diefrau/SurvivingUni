@@ -5,61 +5,36 @@ const wait = (ms = 120) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export interface CampusRepository {
   listBuildings(): Promise<Building[]>;
+  getBuildingById(buildingId: Building['id']): Promise<Building | undefined>;
   listSpots(): Promise<Spot[]>;
   listTags(): Promise<Tag[]>;
+  listSpotsByTag(tagId: Tag['id']): Promise<Spot[]>;
   listSpotsByBuilding(buildingId: Building['id']): Promise<Spot[]>;
   getSpotById(spotId: Spot['id']): Promise<Spot | undefined>;
   listFavorites(): Promise<Favorite[]>;
-  listFavoriteSpots(): Promise<Spot[]>;
+  listFavoriteSpots(favoriteSpotIds?: Spot['id'][]): Promise<Spot[]>;
   listReports(): Promise<Report[]>;
   createReport(report: ReportDraft): Promise<Report>;
 }
 
 export const campusService: CampusRepository = {
-  async listBuildings(): Promise<Building[]> {
+  async listBuildings() { await wait(); return mockBuildings; },
+  async getBuildingById(buildingId) { await wait(); return mockBuildings.find((building) => building.id === buildingId); },
+  async listSpots() { await wait(); return mockPlaces; },
+  async listTags() { await wait(); return mockTags; },
+  async listSpotsByTag(tagId) { await wait(); return mockPlaces.filter((spot) => spot.tagIds.includes(tagId)); },
+  async listSpotsByBuilding(buildingId) { await wait(); return mockPlaces.filter((spot) => spot.buildingId === buildingId); },
+  async getSpotById(spotId) { await wait(); return mockPlaces.find((spot) => spot.id === spotId); },
+  async listFavorites() { await wait(); return mockFavorites; },
+  async listFavoriteSpots(favoriteSpotIds) {
     await wait();
-    return mockBuildings;
+    const ids = new Set(favoriteSpotIds ?? mockFavorites.map((favorite) => favorite.spotId));
+    return mockPlaces.filter((spot) => ids.has(spot.id));
   },
-  async listSpots(): Promise<Spot[]> {
-    await wait();
-    return mockPlaces;
-  },
-  async listTags(): Promise<Tag[]> {
-    await wait();
-    return mockTags;
-  },
-  async listSpotsByBuilding(buildingId: Building['id']): Promise<Spot[]> {
-    await wait();
-    return mockPlaces.filter((spot) => spot.buildingId === buildingId);
-  },
-  async getSpotById(spotId: Spot['id']): Promise<Spot | undefined> {
-    await wait();
-    return mockPlaces.find((spot) => spot.id === spotId);
-  },
-  async listFavorites(): Promise<Favorite[]> {
-    await wait();
-    return mockFavorites;
-  },
-  async listFavoriteSpots(): Promise<Spot[]> {
-    await wait();
-    const favoriteSpotIds = new Set(mockFavorites.map((favorite) => favorite.spotId));
-    return mockPlaces.filter((spot) => favoriteSpotIds.has(spot.id));
-  },
-  async listReports(): Promise<Report[]> {
-    await wait();
-    return mockReports;
-  },
-  async createReport(report: ReportDraft): Promise<Report> {
+  async listReports() { await wait(); return mockReports; },
+  async createReport(report) {
     await wait(200);
-    return {
-      id: `report-${Date.now()}`,
-      spotId: report.spotId,
-      buildingId: report.buildingId,
-      category: report.category,
-      title: report.title,
-      description: report.description,
-      status: 'received',
-      createdAt: new Date().toISOString(),
-    };
+    if (report.title.toLowerCase().includes('fail')) throw new Error('Mock report failure');
+    return { id: `report-${Date.now()}`, ...report, status: 'received', createdAt: new Date().toISOString() };
   },
 };
